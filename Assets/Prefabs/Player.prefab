@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7496642629948517060}
   m_Layer: 0
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,7 +153,7 @@ Rigidbody2D:
   m_AngularDrag: 3
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -169,11 +169,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05623c8a8463222448472d0799749fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 100
+  moveSpeed: 10
   rotationSpeed: 25
   hungerBar: {fileID: 0}
   hungerPercent: {fileID: 0}
   hungerSpeed: 1
+  holdMax: 2
+  lungeStrength: 2
+  lungeCost: 2
+  lungeMeter: {fileID: 0}
+  maxSize: 1.5
+  foodValue: 10
 --- !u!1 &3966287221291302879
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +193,7 @@ GameObject:
   - component: {fileID: 1263685218930027473}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -286,7 +292,7 @@ GameObject:
   - component: {fileID: 187770487530056455}
   m_Layer: 0
   m_Name: Neck
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -385,7 +391,7 @@ GameObject:
   - component: {fileID: 6054728801751686333}
   m_Layer: 0
   m_Name: Tail
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,8 +457,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
+  - {x: -8, y: -3.5, z: 0}
+  - {x: -8, y: -3.3, z: 0}
+  - {x: -8, y: -3.1, z: 0}
+  - {x: -8, y: -3, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -460,8 +468,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.02631666
-        value: 0.07446748
+        time: 0
+        value: 0.5425552
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -473,7 +481,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.9058824, g: 0.75294125, b: 0.24705884, a: 1}
+      key0: {r: 0.9058824, g: 0.75294125, b: 0.24705884, a: 0}
       key1: {r: 0, g: 0, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -531,6 +539,7 @@ MonoBehaviour:
   - {fileID: 4848304299239905888}
   - {fileID: 5872270026429147560}
   - {fileID: 1405496271242703667}
+  player: {fileID: 2536450337002164017}
 --- !u!1 &8817946176039714992
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +553,7 @@ GameObject:
   - component: {fileID: 4980050931698993347}
   m_Layer: 0
   m_Name: Tail
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -641,7 +650,7 @@ GameObject:
   - component: {fileID: 3034737241712578312}
   m_Layer: 0
   m_Name: Target
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

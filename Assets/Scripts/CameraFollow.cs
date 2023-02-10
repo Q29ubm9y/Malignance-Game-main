@@ -33,11 +33,11 @@ public class CameraFollow : MonoBehaviour
         float xMovement = Mathf.Abs(Input.GetAxis("Horizontal"));
         float yMovement = Mathf.Abs(Input.GetAxis("Vertical"));
         if ((xMovement > 0.25f || yMovement > 0.25f) && !Input.GetMouseButton(0)) {
-            currentSize = Mathf.Lerp(currentSize, zoomedOut, Time.deltaTime);
+            currentSize = Mathf.Lerp(currentSize, zoomedOut + target.localScale.x, Time.deltaTime);
         } else {
-            currentSize = Mathf.Lerp(currentSize, zoomedIn, Time.deltaTime);
+            currentSize = Mathf.Lerp(currentSize, zoomedIn + target.localScale.x, Time.deltaTime);
         }
-        GetComponent<Camera>().orthographicSize = currentSize + target.localScale.x;
+        GetComponent<Camera>().orthographicSize = currentSize;
 
     }
 }
