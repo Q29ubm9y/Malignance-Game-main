@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: c14c4ade33e8207458738fc7cfa7cf15
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - The End Font
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c899c05d678e57248bf54565b6fb8438, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

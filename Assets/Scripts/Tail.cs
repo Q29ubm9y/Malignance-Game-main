@@ -30,10 +30,10 @@ public class Tail : MonoBehaviour
     {
         segmentPositions[0] = targetDir.position; // Define first segment at starting position
 
-        targetDist = player.localScale.x * 0.66f; // Increase segment distance based on player size
+        float targetDistScale = player.localScale.x * 0.66f; // Increase segment distance based on player size
 
         for(int i = 1; i < segmentPositions.Length; i++) {
-            Vector3 targetPosition = segmentPositions[i - 1] + (segmentPositions[i] - segmentPositions[i - 1]).normalized * targetDist; // Direction from i-1 position to i position
+            Vector3 targetPosition = segmentPositions[i - 1] + (segmentPositions[i] - segmentPositions[i - 1]).normalized * targetDist * targetDistScale; // Direction from i-1 position to i position
             segmentPositions[i] = Vector3.SmoothDamp(segmentPositions[i], targetPosition, ref segmentV[i], smoothSpeed); // Smooth vector change to target vector
             bodyParts[i - 1].transform.position = segmentPositions[i]; // Body part sprites set to line segment positions
         }

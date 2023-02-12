@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Slider hungerBar;
     [SerializeField] TextMeshProUGUI hungerPercent;
     [SerializeField] float hungerSpeed = 1.0f;
+    [SerializeField] AudioSource eatingSound;
     private float currentHunger;
     private float maxHunger = 100f;
     
@@ -24,19 +25,28 @@ public class PlayerController : MonoBehaviour
     private bool isMousePressed;
     private float holdLength = 0.0f;
     [SerializeField] float holdMax = 2.0f;
-    [SerializeField] float lungeStrength = 2.0f;
+    [SerializeField] float lungeSpeed = 2.0f;
     [SerializeField] float lungeCost = 2.0f;
     [SerializeField] Slider lungeMeter;
+    [SerializeField] GameObject lungeUI;
+    [SerializeField] AudioSource lungeSound;
 
     [SerializeField] float maxSize = 1.5f;
     [SerializeField] float foodValue = 10.0f;
 
+    private int health;
+    public int maxHealth = 100;
+    public int attackDamage = 25;
+    private bool isAttacking = false;
+    private float attackTimer;
 
+    public GameObject gameOverScreen;
 
     void Start() 
     {
         rb = this.GetComponent<Rigidbody2D>();
         currentHunger = maxHunger;
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -46,12 +56,21 @@ public class PlayerController : MonoBehaviour
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         */
 
+        if (attackTimer > 0) {
+            attackTimer -= Time.deltaTime;
+        } else {
+            isAttacking = false;
+        }
+
         isMousePressed = Input.GetMouseButton(0); // If mouse button 0 is held down or not
 
         if (Input.GetMouseButtonUp(0)) { // When stop holding down mouse button
-            rb.AddForce(lookDirection * holdLength * lungeStrength, ForceMode2D.Impulse); // Lunge force
+            rb.AddForce(lookDirection * holdLength * lungeSpeed, ForceMode2D.Impulse); // Lunge force
             currentHunger -= lungeCost * holdLength; // Lose hunger based on how long lunge was charged for
             holdLength = 0.0f; // Reset lunge charge
+            isAttacking = true; // Activate ability to deal damage
+            attackTimer = holdLength; // Attack mode duration based on how long the lunge was charged for
+            lungeSound.Play();
         }
         movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); // Vector3 direction based on movement axis input
         if (isMousePressed) {
@@ -71,6 +90,8 @@ public class PlayerController : MonoBehaviour
         hungerBar.value = currentHunger; // Update hunger bar value
 
         lungeMeter.value = holdLength; // Update lunge meter value
+
+        if (health <= 0) Die();
     }
 
     private void FixedUpdate()
@@ -92,11 +113,29 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Food")) {
             Destroy(other.gameObject); // Eat the food
-            currentHunger = currentHunger + foodValue; // Increment hunger value
-            if(currentHunger > maxHunger) { // If hunger value goes above max
-                Grow(currentHunger - maxHunger); // Grow based on how much above max
-                currentHunger = maxHunger; // Reset hunger to max
-            }
+            EatFood();
+        } else if (other.CompareTag("Enemy")) {
+            if (isAttacking) DamageEnemy(other.gameObject);
+        }
+    }
+
+    void DamageEnemy(GameObject enemy) {
+        enemy.GetComponentInParent<EnemyAI>().TakeDamage(attackDamage);
+        
+    }
+
+    void EatFood() {
+        currentHunger = currentHunger + foodValue; // Increment hunger value
+        if (currentHunger > maxHunger) { // If hunger value goes above max
+            Grow(currentHunger - maxHunger); // Grow based on how much above max
+            currentHunger = maxHunger; // Reset hunger to max
+        }
+        eatingSound.Play();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Enemy")) {
+
         }
     }
 
@@ -104,5 +143,14 @@ public class PlayerController : MonoBehaviour
         Vector3 growth = new Vector3(excess / 50.0f, excess / 50.0f); // Growth amount based on how much excess food was eaten
         if(this.transform.localScale.x < maxSize) {this.transform.localScale += growth;} // Grow size if below max
         if(this.transform.localScale.x > maxSize) {this.transform.localScale = new Vector3(maxSize, maxSize);} // If overshot max size, reset to max size
+    }
+
+    public void TakeDamage(int amount) {
+        health -= amount;
+    }
+
+    void Die() {
+        Destroy(this.gameObject);
+        gameOverScreen.SetActive(true);
     }
 }
